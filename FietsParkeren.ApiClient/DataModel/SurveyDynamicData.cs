@@ -7,15 +7,20 @@ namespace FietsParkeren.ApiClient.DataModel
 {
     public class SurveyDynamicDataRaw
     {
+        [JsonProperty("dynamicData")]
+        public SectionsRawWrapper DynamicData { get; set; }
+
         [JsonProperty("sections")]
-        public SectionsRawWrapper Sections { get; set; }
+        public IEnumerable<SectionRaw> Sections { get; set; }
+
     }
 
     public static class SurveyDynamicDataRawExtensions
     {
         public static IEnumerable<Section> AsSection(this SurveyDynamicDataRaw obj)
         {
-            return obj?.Sections?.AsSections();
+            return obj?.DynamicData?.AsSections()
+                ?? obj?.Sections.AsSections();
         }
     }
 }
