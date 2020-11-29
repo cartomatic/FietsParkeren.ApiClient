@@ -95,7 +95,7 @@ namespace FietsParkeren.ApiClient.DataModel
 
         public static IEnumerable<SectionDynamicData> AsSections(this SectionDynamicDataRawResponse data)
         {
-            return data?.AsSections();
+            return data?.Sections.AsSections();
         }
     }
 }

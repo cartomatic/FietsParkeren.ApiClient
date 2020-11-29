@@ -56,7 +56,7 @@ namespace FietsParkeren.ApiClient
 
             foreach (var resp in surveysCallResponses)
             {
-                outData.AddRange(resp.Surveys.AsSurveys());
+                outData.AddRange(resp.Surveys?.AsSurveys() ?? new Survey[0]);
             }
 
             return outData;

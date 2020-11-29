@@ -47,7 +47,7 @@ namespace FietsParkeren.ApiClient
                         output.Add(result);
 
                         //if the results are paged, keep on poking the api to obtain all of them
-                        if ((result.TotalHits ?? 0) > (result.Page ?? 0) * (result.PageSize ?? 0))
+                        if (result.Page.HasValue && result.PageSize.HasValue && (result.TotalHits ?? 0) > result.Page * result.PageSize)
                         {
                             page++;
                         }

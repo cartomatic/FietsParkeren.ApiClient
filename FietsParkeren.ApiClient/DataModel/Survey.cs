@@ -16,7 +16,7 @@ namespace FietsParkeren.ApiClient.DataModel
 
         public Authority Authority { get; set; }
 
-        public IEnumerable<Contractor> Contactors { get; set; }
+        public IEnumerable<Contractor> Contractors { get; set; }
     }
 
     public class SurveysRaw
@@ -59,7 +59,7 @@ namespace FietsParkeren.ApiClient.DataModel
                     StartDate = obj.StartDate,
                     EndDate = obj.EndDate,
                     Authority = obj.Authority.AsAuthority(),
-                    Contactors = obj.Contractors.AsContractors()
+                    Contractors = obj.Contractors.AsContractors()
                 };
 
             return null;

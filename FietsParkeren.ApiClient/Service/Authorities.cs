@@ -59,7 +59,7 @@ namespace FietsParkeren.ApiClient
 
             foreach (var resp in authoritiesCallResponses)
             {
-                outData.AddRange(resp.Authorities.AsAuthorities());
+                outData.AddRange(resp.Authorities?.AsAuthorities() ?? new Authority[0]);
             }
 
             return outData;
