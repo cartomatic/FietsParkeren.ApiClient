@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace FietsParkeren.ApiClient.DataModel
 {
-    public class Section
+    public class SectionDynamicData
     {
         public string Id { get; set; }
 
@@ -25,27 +25,8 @@ namespace FietsParkeren.ApiClient.DataModel
 
         public IEnumerable<Count> Counts { get; set; }
     }
-
-    public class SectionsRawWrapper
-    {
-        [JsonProperty("sections")]
-        public IEnumerable<SectionRaw> Sections { get; set; }
-
-        [JsonProperty("totalHits")]
-        public int? TotalHits { get; set; }
-
-        [JsonProperty("queryTime")]
-        public int? QueryTime { get; set; }
-
-        [JsonProperty("resultsPerPage")]
-        public int? ResultsPerPage { get; set; }
-
-        [JsonProperty("pge")]
-        public int? Page { get; set; }
-    }
-
-
-    public class SectionRaw
+    
+    public class SectionDynamicDataRaw
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -72,12 +53,27 @@ namespace FietsParkeren.ApiClient.DataModel
         public IEnumerable<CountRaw> CountsRaw { get; set; }
     }
 
-    public static class SectionRawExtensions
+    public class SectionDynamicDataRawResponse : BaseResponse
     {
-        public static Section AsSection(this SectionRaw obj)
+        [JsonProperty("sections")]
+        public SectionDynamicDataRaw[] Sections { get; set; }
+
+    }
+
+    public static class SectionDynamicDataRawResponseExtensions
+    {
+        public static IEnumerable<SectionDynamicData> AsSection(this SectionDynamicDataRawResponse obj)
+        {
+            return obj?.Sections.AsSections();
+        }
+    }
+
+    public static class SectionDynamicDataRawExtensions
+    {
+        public static SectionDynamicData AsSection(this SectionDynamicDataRaw obj)
         {
             if (obj != null)
-                return new Section
+                return new SectionDynamicData
                 {
                     Id = obj.Id,
                     TimeStamp = obj.TimeStamp,
@@ -92,14 +88,14 @@ namespace FietsParkeren.ApiClient.DataModel
             return null;
         }
 
-        public static IEnumerable<Section> AsSections(this IEnumerable<SectionRaw> data)
+        public static IEnumerable<SectionDynamicData> AsSections(this IEnumerable<SectionDynamicDataRaw> data)
         {
             return data.Select(x => x.AsSection());
         }
 
-        public static IEnumerable<Section> AsSections(this SectionsRawWrapper data)
+        public static IEnumerable<SectionDynamicData> AsSections(this SectionDynamicDataRawResponse data)
         {
-            return data?.Sections?.AsSections();
+            return data?.AsSections();
         }
     }
 }

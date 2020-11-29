@@ -22,6 +22,14 @@ namespace FietsParkeren.ApiClient.DataModel
         public string Name { get; set; }
     }
 
+    public class AuthorityRawResponse : BaseResponse
+    {
+        [JsonProperty("authorities")]
+        public AuthorityRaw[] Authorities { get; set; }
+    }
+
+
+
     public static class AuthorityRawExtensions
     {
         public static Authority AsAuthority(this AuthorityRaw obj)

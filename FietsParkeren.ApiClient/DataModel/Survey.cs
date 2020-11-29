@@ -24,6 +24,12 @@ namespace FietsParkeren.ApiClient.DataModel
         public SurveyRaw[] Surveys { get; set; }
     }
 
+    public class SurveysRawResponse : BaseResponse
+    {
+        [JsonProperty("surveys")]
+        public SurveyRaw[] Surveys { get; set; }
+    }
+
     public class SurveyRaw
     {
         [JsonProperty("id")]

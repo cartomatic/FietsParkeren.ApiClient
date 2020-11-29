@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using FietsParkeren.ApiClient.DataModel;
 using RestSharp;
 
 namespace FietsParkeren.ApiClient
@@ -18,58 +19,55 @@ namespace FietsParkeren.ApiClient
         /// <param name="auth">Authorization header value</param>
         /// <param name="queryParams">query params</param>
         /// <returns></returns>
-        private static async Task<T> ApiCall<T>(string url, string route, string auth, Dictionary<string, object> queryParams = null)
-            where T : class
+        private static async Task<IEnumerable<T>> ApiCall<T>(string url, string route, string auth, Dictionary<string, object> queryParams = null)
+            where T : BaseResponse
         {
-            var output = default(T);
+            var output = new List<T>();
+            var hasMoreResults = true;
+            var page = 1;
 
-            try
-            {
-                var apiCall = await Cartomatic.Utils.RestApi.RestApiCall<T>(
-                    url,
-                    route,
-                    Method.GET,
-                    authToken: auth,
-                    queryParams: queryParams
-                );
+            queryParams ??= new Dictionary<string, object>();
+            queryParams["page"] = page;
 
-                if (apiCall.Response.IsSuccessful)
-                    output = apiCall.Output;
-            }
-            catch
+            while (hasMoreResults)
             {
-                //ignore
+                try
+                {
+                    var apiCall = await Cartomatic.Utils.RestApi.RestApiCall<T>(
+                        url,
+                        route,
+                        Method.GET,
+                        authToken: auth,
+                        queryParams: queryParams
+                    );
+
+                    if (apiCall.Response.IsSuccessful)
+                    {
+                        var result = apiCall.Output;
+                        output.Add(result);
+
+                        //if the results are paged, keep on poking the api to obtain all of them
+                        if ((result.TotalHits ?? 0) > (result.Page ?? 0) * (result.PageSize ?? 0))
+                        {
+                            page++;
+                        }
+                        else
+                        {
+                            hasMoreResults = false;
+                        }
+                    }
+                    else
+                    {
+                        hasMoreResults = false;
+                    }
+                }
+                catch
+                {
+                    hasMoreResults = false;
+                }
             }
 
             return output;
-        }
-
-        /// <summary>
-        /// Generic external api caller
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="route"></param>
-        /// <param name="auth"></param>
-        /// <param name="queryParams"></param>
-        /// <returns>original api response</returns>
-        private static async Task<IRestResponse> ApiCall(string url, string route, string auth, Dictionary<string, object> queryParams = null)
-        {
-            try
-            {
-                return await Cartomatic.Utils.RestApi.RestApiCall(
-                    url,
-                    route,
-                    Method.GET,
-                    authToken: auth,
-                    queryParams: queryParams
-                );
-            }
-            catch
-            {
-                //ignore
-            }
-
-            return null;
         }
     }
 }

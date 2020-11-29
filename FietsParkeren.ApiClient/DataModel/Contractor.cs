@@ -22,6 +22,12 @@ namespace FietsParkeren.ApiClient.DataModel
         public string Name { get; set; }
     }
 
+    public class ContractorRawResponse : BaseResponse
+    {
+        [JsonProperty("contractors")]
+        public ContractorRaw[] Contractors { get; set; }
+    }
+
     public static class ContractorRawExtensions
     {
         public static Contractor AsContractor(this ContractorRaw obj)
