@@ -13,6 +13,8 @@ namespace FietsParkeren.ApiClient.DataModel
 
         public DateTime? TimeStamp { get; set; }
 
+        public string AuthorityId { get; set; }
+
         public string SurveyId { get; set; }
 
         public string ContractorId { get; set; }
@@ -22,6 +24,8 @@ namespace FietsParkeren.ApiClient.DataModel
         public int? VacantSpaces { get; set; }
 
         public int? OccupiedSpaces { get; set; }
+
+        public string StaticSectionId { get; set; }
 
         public IEnumerable<Count> Counts { get; set; }
     }
@@ -33,6 +37,9 @@ namespace FietsParkeren.ApiClient.DataModel
 
         [JsonProperty("timestamp")]
         public DateTime? TimeStamp { get; set; }
+
+        [JsonProperty("authorityId")]
+        public string AuthorityId { get; set; }
 
         [JsonProperty("surveyId")]
         public string SurveyId { get; set; }
@@ -48,6 +55,9 @@ namespace FietsParkeren.ApiClient.DataModel
 
         [JsonProperty("occupiedSpaces")]
         public int? OccupiedSpaces { get; set; }
+
+        [JsonProperty("staticSectionId")]
+        public string StaticSectionId { get; set; }
 
         [JsonProperty("count")]
         public IEnumerable<CountRaw> CountsRaw { get; set; }
@@ -77,11 +87,13 @@ namespace FietsParkeren.ApiClient.DataModel
                 {
                     Id = obj.Id,
                     TimeStamp = obj.TimeStamp,
+                    AuthorityId = obj.AuthorityId,
                     SurveyId = obj.SurveyId,
                     ContractorId = obj.ContractorId,
                     ParkingCapacity = obj.ParkingCapacity,
                     VacantSpaces = obj.VacantSpaces,
                     OccupiedSpaces = obj.OccupiedSpaces,
+                    StaticSectionId = obj.StaticSectionId,
                     Counts = obj.CountsRaw.AsCounts()
                 };
 
