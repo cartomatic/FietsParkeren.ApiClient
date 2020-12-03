@@ -48,7 +48,7 @@ namespace FietsParkeren.ApiClient
 
            
 
-            var authoritiesCallResponses = await ApiCall<AuthorityRawResponse>(
+            var authoritiesCallResponses = await ApiCallWithCombinedPages<AuthorityRawResponse>(
                 cfg.Endpoint,
                 cfg.Routes.Authorities,
                 authHdr,

@@ -45,7 +45,7 @@ namespace FietsParkeren.ApiClient
         {
             var cfg = ServiceConfig.Read();
             
-            var contractorsCallResponses = await ApiCall<ContractorRawResponse>(
+            var contractorsCallResponses = await ApiCallWithCombinedPages<ContractorRawResponse>(
                 cfg.Endpoint,
                 cfg.Routes.Contractors,
                 authHdr,

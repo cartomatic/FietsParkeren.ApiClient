@@ -17,10 +17,12 @@ namespace FietsParkeren.ApiClient
         /// <param name="surveyIds">comma separated survey ids</param>
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
+        /// <param name="pageSize"></param>
+        /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<SectionDynamicData>> GetSurveyDynamicDataAsync(string user, string pass, string surveyIds, string geoPolygon, string geoRelation)
+        public static async Task<PagedResult<IEnumerable<SectionDynamicData>>> GetSurveyDynamicDataAsync(string user, string pass, string surveyIds, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null)
         {
-            return await GetSurveyDynamicDataAsync(GetAuthorizationHeaderValue(user, pass), surveyIds, geoPolygon, geoRelation);
+            return await GetSurveyDynamicDataAsync(GetAuthorizationHeaderValue(user, pass), surveyIds, geoPolygon, geoRelation, pageSize, page);
         }
 
         /// <summary>
@@ -30,10 +32,12 @@ namespace FietsParkeren.ApiClient
         /// <param name="surveyIds">comma separated survey ids</param>
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
+        /// <param name="pageSize"></param>
+        /// <param name="page"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<SectionDynamicData>> GetSurveyDynamicDataAsync(string authToken, string surveyIds, string geoPolygon, string geoRelation)
+        public static async Task<PagedResult<IEnumerable<SectionDynamicData>>> GetSurveyDynamicDataAsync(string authToken, string surveyIds, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null)
         {
-            return await GetSurveyDynamicDataInternalsAsync(GetAuthorizationHeaderValue(authToken), surveyIds, geoPolygon, geoRelation);
+            return await GetSurveyDynamicDataInternalsAsync(GetAuthorizationHeaderValue(authToken), surveyIds, geoPolygon, geoRelation, pageSize, page);
         }
 
         /// <summary>
@@ -44,32 +48,39 @@ namespace FietsParkeren.ApiClient
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
         /// <returns></returns>
-        protected internal static async Task<IEnumerable<SectionDynamicData>> GetSurveyDynamicDataInternalsAsync(string authHdr, string surveyIds, string geoPolygon, string geoRelation)
+        protected internal static async Task<PagedResult<IEnumerable<SectionDynamicData>>> GetSurveyDynamicDataInternalsAsync(string authHdr, string surveyIds, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null)
         {
             var cfg = ServiceConfig.Read();
-            
-            var surveysDynamicDataCallResponses = await ApiCall<SectionDynamicDataRawResponse>(
+
+            var queryParams = PrepareGeoPolygonQuery(
+                new Dictionary<string, object>
+                {
+                    {"surveyId", surveyIds}
+                },
+                geoPolygon,
+                geoRelation
+            );
+
+            if(pageSize.HasValue)
+                queryParams.Add("pageSize", pageSize.Value);
+
+            if (page.HasValue)
+                queryParams.Add("page", page.Value);
+
+
+            var surveysDynamicDataCallResponse = await ApiCallSinglePage<SectionDynamicDataRawResponse>(
                 cfg.Endpoint,
                 cfg.Routes.DynamicData,
                 authHdr,
-                queryParams: PrepareGeoPolygonQuery(
-                    new Dictionary<string, object>
-                    {
-                        {"surveyId", surveyIds}
-                    },
-                    geoPolygon,
-                    geoRelation
-                )
+                queryParams: queryParams
             );
 
-            var outData = new List<SectionDynamicData>();
-
-            foreach (var resp in surveysDynamicDataCallResponses)
+            return new PagedResult<IEnumerable<SectionDynamicData>>
             {
-                outData.AddRange(resp?.AsSections() ?? new SectionDynamicData[0]);
-            }
+                Data = surveysDynamicDataCallResponse.AsSections(),
+                Total = surveysDynamicDataCallResponse.TotalHits ?? 0
+            };
 
-            return outData;
         }
     }
 }

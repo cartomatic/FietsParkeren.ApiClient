@@ -19,7 +19,7 @@ namespace FietsParkeren.ApiClient
         /// <param name="auth">Authorization header value</param>
         /// <param name="queryParams">query params</param>
         /// <returns></returns>
-        private static async Task<IEnumerable<T>> ApiCall<T>(string url, string route, string auth, Dictionary<string, object> queryParams = null)
+        private static async Task<IEnumerable<T>> ApiCallWithCombinedPages<T>(string url, string route, string auth, Dictionary<string, object> queryParams = null)
             where T : BaseResponse
         {
             var output = new List<T>();
@@ -68,6 +68,21 @@ namespace FietsParkeren.ApiClient
             }
 
             return output;
+        }
+
+
+        private static async Task<T> ApiCallSinglePage<T>(string url, string route, string auth, Dictionary<string, object> queryParams = null)
+            where T : BaseResponse
+        {
+            var apiCall = await Cartomatic.Utils.RestApi.RestApiCall<T>(
+                url,
+                route,
+                Method.GET,
+                authToken: auth,
+                queryParams: queryParams
+            );
+
+            return apiCall.Output;
         }
     }
 }
