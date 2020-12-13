@@ -10,6 +10,8 @@ namespace FietsParkeren.ApiClient.DataModel
     {
         public string Id { get; set; }
 
+        public string Name { get; set; }
+
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
@@ -35,6 +37,9 @@ namespace FietsParkeren.ApiClient.DataModel
         [JsonProperty("id")]
         public string Id { get; set; }
 
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
         [JsonProperty("startdate")]
         public DateTime? StartDate { get; set; }
 
@@ -56,6 +61,7 @@ namespace FietsParkeren.ApiClient.DataModel
                 return new Survey
                 {
                     Id = obj.Id,
+                    Name = obj.Name,
                     StartDate = obj.StartDate,
                     EndDate = obj.EndDate,
                     Authority = obj.Authority.AsAuthority(),

@@ -77,8 +77,8 @@ namespace FietsParkeren.ApiClient
 
             return new PagedResult<IEnumerable<SectionDynamicData>>
             {
-                Data = surveysDynamicDataCallResponse.AsSections(),
-                Total = surveysDynamicDataCallResponse.TotalHits ?? 0
+                Data = surveysDynamicDataCallResponse?.AsSections(),
+                Total = surveysDynamicDataCallResponse?.TotalHits ?? 0
             };
 
         }
