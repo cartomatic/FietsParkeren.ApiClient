@@ -27,7 +27,9 @@ namespace FietsParkeren.ApiClient.DataModel
 
         public string StaticSectionId { get; set; }
 
-        public IEnumerable<Count> Counts { get; set; }
+        #region gone in api v2
+        //public IEnumerable<Count> Counts { get; set; }
+        #endregion  
     }
     
     public class SectionDynamicDataRaw
@@ -59,14 +61,24 @@ namespace FietsParkeren.ApiClient.DataModel
         [JsonProperty("staticSectionId")]
         public string StaticSectionId { get; set; }
 
-        [JsonProperty("count")]
-        public IEnumerable<CountRaw> CountsRaw { get; set; }
+        #region gone in api v2
+        //[JsonProperty("count")]
+        //public IEnumerable<CountRaw> CountsRaw { get; set; }
+        #endregion
+
     }
 
     public class SectionDynamicDataRawResponse : BaseResponse
     {
-        [JsonProperty("sections")]
+        [JsonProperty("result")]
         public SectionDynamicDataRaw[] Sections { get; set; }
+
+    }
+
+    public class SectionDynamicDataMaxOccupationRawResponse : BaseResponse
+    {
+        [JsonProperty("result")]
+        public SectionDynamicDataRawResponse[] Result { get; set; }
 
     }
 
@@ -94,7 +106,9 @@ namespace FietsParkeren.ApiClient.DataModel
                     VacantSpaces = obj.VacantSpaces,
                     OccupiedSpaces = obj.OccupiedSpaces,
                     StaticSectionId = obj.StaticSectionId,
-                    Counts = obj.CountsRaw.AsCounts()
+                    #region gone in api v2
+                    //Counts = obj.CountsRaw.AsCounts()
+                    #endregion
                 };
 
             return null;

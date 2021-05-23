@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
@@ -12,21 +13,32 @@ namespace FietsParkeren.ApiClient.DataModel
 
         public string Name { get; set; }
 
-        public string Buurt { get; set; }
+        #region new v2 proprties
+        public string[] SurveyIds { get; set; }
 
-        public decimal? Area { get; set; }
+        public string[] AuthorityIds { get; set; }
 
-        public string AuthorityId { get; set; }
+        public string[] ContractorIds { get; set; }
+        #endregion
 
-        public string ContractorId { get; set; }
+        #region old v1 properties
+        //in api v2 properties below are gone :(
+        //public string Buurt { get; set; }
 
-        public string SurveyId { get; set; }
+        //public decimal? Area { get; set; }
 
-        public SectionStaticDataRelatedObject[] Authorities { get; set; }
+        //public string AuthorityId { get; set; }
 
-        public SectionStaticDataRelatedObject[] Contractors { get; set; }
+        //public string ContractorId { get; set; }
 
-        public SectionStaticDataRelatedObject[] Surveys { get; set; }
+        //public string SurveyId { get; set; }
+
+        //public SectionStaticDataRelatedObject[] Authorities { get; set; }
+
+        //public SectionStaticDataRelatedObject[] Contractors { get; set; }
+
+        //public SectionStaticDataRelatedObject[] Surveys { get; set; }
+        #endregion
 
         public SectionStaticDataGeoLocation GeoLocation { get; set; }
     }
@@ -39,29 +51,43 @@ namespace FietsParkeren.ApiClient.DataModel
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("buurt")]
-        public string Buurt { get; set; }
+        #region new v2 proprties
+        [JsonProperty("surveyIds")]
+        public string[] SurveyIds { get; set; }
 
-        [JsonProperty("area")]
-        public decimal? Area { get; set; }
-        
-        [JsonProperty("authorityId")]
-        public string AuthorityId { get; set; }
+        [JsonProperty("authorityIds")]
+        public string[] AuthorityIds { get; set; }
 
-        [JsonProperty("contractorId")]
-        public string ContractorId { get; set; }
+        [JsonProperty("contractorIds")]
+        public string[] ContractorIds { get; set; }
+        #endregion
 
-        [JsonProperty("surveyId")]
-        public string SurveyId { get; set; }
+        #region old v1 properties
+        //in api v2 properties below are gone :(
+        //[JsonProperty("buurt")]
+        //public string Buurt { get; set; }
 
-        [JsonProperty("authorities")]
-        public SectionStaticDataRelatedObjectRaw[] Authorities { get; set; }
+        //[JsonProperty("area")]
+        //public decimal? Area { get; set; }
 
-        [JsonProperty("contractors")]
-        public SectionStaticDataRelatedObjectRaw[] Contractors { get; set; }
+        //[JsonProperty("authorityId")]
+        //public string AuthorityId { get; set; }
 
-        [JsonProperty("surveys")]
-        public SectionStaticDataRelatedObjectRaw[] Surveys { get; set; }
+        //[JsonProperty("contractorId")]
+        //public string ContractorId { get; set; }
+
+        //[JsonProperty("surveyId")]
+        //public string SurveyId { get; set; }
+
+        //[JsonProperty("authorities")]
+        //public SectionStaticDataRelatedObjectRaw[] Authorities { get; set; }
+
+        //[JsonProperty("contractors")]
+        //public SectionStaticDataRelatedObjectRaw[] Contractors { get; set; }
+
+        //[JsonProperty("surveys")]
+        //public SectionStaticDataRelatedObjectRaw[] Surveys { get; set; }
+        #endregion
 
         [JsonProperty("geoLocation")]
         public SectionStaticDataGeoLocationRaw GeoLocation { get; set; }
@@ -70,7 +96,7 @@ namespace FietsParkeren.ApiClient.DataModel
 
     public class SectionStaticDataRawResponse : BaseResponse
     {
-        [JsonProperty("sections")]
+        [JsonProperty("result")]
         public SectionStaticDataRaw[] Sections { get; set; }
     }
 
@@ -91,14 +117,25 @@ namespace FietsParkeren.ApiClient.DataModel
                 {
                     Id = obj.Id,
                     Name = obj.Name,
-                    Buurt = obj.Buurt,
-                    Area = obj.Area,
-                    AuthorityId = obj.AuthorityId,
-                    ContractorId = obj.ContractorId,
-                    SurveyId = obj.SurveyId,
-                    Authorities = obj.Authorities.AsSectionStaticDataRelatedObject(),
-                    Contractors = obj.Contractors.AsSectionStaticDataRelatedObject(),
-                    Surveys = obj.Surveys.AsSectionStaticDataRelatedObject(),
+
+                    #region new v2 proprties
+                    SurveyIds = obj.SurveyIds,
+                    AuthorityIds = obj.AuthorityIds,
+                    ContractorIds = obj.ContractorIds,
+                    #endregion
+
+                    #region old v1 properties
+                    //in api v2 properties below are gone :(
+                    //Buurt = obj.Buurt,
+                    //Area = obj.Area,
+                    //AuthorityId = obj.AuthorityId,
+                    //ContractorId = obj.ContractorId,
+                    //SurveyId = obj.SurveyId,
+                    //Authorities = obj.Authorities.AsSectionStaticDataRelatedObject(),
+                    //Contractors = obj.Contractors.AsSectionStaticDataRelatedObject(),
+                    //Surveys = obj.Surveys.AsSectionStaticDataRelatedObject(),
+                    #endregion
+
                     GeoLocation = obj.GeoLocation.AsSectionStaticDataGeoLocation()
                 };
 

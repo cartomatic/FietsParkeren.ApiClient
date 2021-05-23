@@ -12,13 +12,14 @@ namespace FietsParkeren.ApiClient.DataModel
 
         public string Name { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        //in api v2 properties below are gone :(
+        //public DateTime? StartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        //public DateTime? EndDate { get; set; }
 
-        public Authority Authority { get; set; }
+        //public Authority Authority { get; set; }
 
-        public IEnumerable<Contractor> Contractors { get; set; }
+        //public IEnumerable<Contractor> Contractors { get; set; }
     }
 
     public class SurveysRaw
@@ -28,7 +29,7 @@ namespace FietsParkeren.ApiClient.DataModel
 
     public class SurveysRawResponse : BaseResponse
     {
-        [JsonProperty("surveys")]
+        [JsonProperty("result")]
         public SurveyRaw[] Surveys { get; set; }
     }
 
@@ -40,17 +41,18 @@ namespace FietsParkeren.ApiClient.DataModel
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("startdate")]
-        public DateTime? StartDate { get; set; }
+        //looks like with the api v2 properties below are gone :(
+        //[JsonProperty("startdate")]
+        //public DateTime? StartDate { get; set; }
 
-        [JsonProperty("enddate")]
-        public DateTime? EndDate { get; set; }
+        //[JsonProperty("enddate")]
+        //public DateTime? EndDate { get; set; }
 
-        [JsonProperty("authority")]
-        public AuthorityRaw Authority { get; set; }
+        //[JsonProperty("authority")]
+        //public AuthorityRaw Authority { get; set; }
 
-        [JsonProperty("contractors")]
-        public ContractorRaw[] Contractors { get; set; }
+        //[JsonProperty("contractors")]
+        //public ContractorRaw[] Contractors { get; set; }
     }
 
     public static class SurveyRawExtensions
@@ -62,10 +64,11 @@ namespace FietsParkeren.ApiClient.DataModel
                 {
                     Id = obj.Id,
                     Name = obj.Name,
-                    StartDate = obj.StartDate,
-                    EndDate = obj.EndDate,
-                    Authority = obj.Authority.AsAuthority(),
-                    Contractors = obj.Contractors.AsContractors()
+                    //in api v2 properties below are gone :(
+                    //StartDate = obj.StartDate,
+                    //EndDate = obj.EndDate,
+                    //Authority = obj.Authority.AsAuthority(),
+                    //Contractors = obj.Contractors.AsContractors()
                 };
 
             return null;
