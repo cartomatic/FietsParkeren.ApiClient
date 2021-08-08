@@ -18,10 +18,11 @@ namespace FietsParkeren.ApiClient
         /// <param name="surveyIds">comma separated survey ids</param>
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
+        /// <param name="endpointIdx"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<SectionStaticData>> GetSurveyStaticDataAsync(string user, string pass, string surveyIds, string geoPolygon, string geoRelation)
+        public static async Task<IEnumerable<SectionStaticData>> GetSurveyStaticDataAsync(string user, string pass, string surveyIds, string geoPolygon, string geoRelation, int? endpointIdx = null)
         {
-            return await GetSurveyStaticDataAsync(GetAuthorizationHeaderValue(user, pass), surveyIds, geoPolygon, geoRelation);
+            return await GetSurveyStaticDataAsync(GetAuthorizationHeaderValue(user, pass), surveyIds, geoPolygon, geoRelation, endpointIdx);
         }
 
         /// <summary>
@@ -31,10 +32,11 @@ namespace FietsParkeren.ApiClient
         /// <param name="surveyIds">comma separated survey ids</param>
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
+        /// <param name="endpointIdx"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<SectionStaticData>> GetSurveyStaticDataAsync(string authToken, string surveyIds, string geoPolygon, string geoRelation)
+        public static async Task<IEnumerable<SectionStaticData>> GetSurveyStaticDataAsync(string authToken, string surveyIds, string geoPolygon, string geoRelation, int? endpointIdx = null)
         {
-            return await GetSurveyStaticDataInternalsAsync(GetAuthorizationHeaderValue(authToken), surveyIds, geoPolygon, geoRelation);
+            return await GetSurveyStaticDataInternalsAsync(GetAuthorizationHeaderValue(authToken), surveyIds, geoPolygon, geoRelation, endpointIdx);
         }
 
         /// <summary>
@@ -45,12 +47,12 @@ namespace FietsParkeren.ApiClient
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
         /// <returns></returns>
-        protected internal static async Task<IEnumerable<SectionStaticData>> GetSurveyStaticDataInternalsAsync(string authHdr, string surveyIds, string geoPolygon, string geoRelation)
+        protected internal static async Task<IEnumerable<SectionStaticData>> GetSurveyStaticDataInternalsAsync(string authHdr, string surveyIds, string geoPolygon, string geoRelation, int? endpointIdx = null)
         {
             var cfg = ServiceConfig.Read();
             
             var surveysStaticDataCallResponses = await ApiCallWithCombinedPages< SectionStaticDataRawResponse>(
-                cfg.Endpoint,
+                cfg.GetEndpoint(endpointIdx ?? 0).Url,
                 cfg.Routes.StaticData,
                 authHdr,
                 queryParams: PrepareGeoPolygonQuery(

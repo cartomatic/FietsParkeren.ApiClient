@@ -15,10 +15,11 @@ namespace FietsParkeren.ApiClient
         /// <param name="pass">auth user pass</param>
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
+        /// <param name="endpointIdx"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<Contractor>> GetContractorsAsync(string user, string pass, string geoPolygon, string geoRelation)
+        public static async Task<IEnumerable<Contractor>> GetContractorsAsync(string user, string pass, string geoPolygon, string geoRelation, int? endpointIdx = null)
         {
-            return await GetContractorsAsync(GetAuthorizationHeaderValue(user, pass), geoPolygon, geoRelation);
+            return await GetContractorsAsync(GetAuthorizationHeaderValue(user, pass), geoPolygon, geoRelation, endpointIdx);
         }
 
         /// <summary>
@@ -27,10 +28,11 @@ namespace FietsParkeren.ApiClient
         /// <param name="authToken">credentials supplied as authorization token</param>
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
+        /// <param name="endpointIdx"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<Contractor>> GetContractorsAsync(string authToken, string geoPolygon, string geoRelation)
+        public static async Task<IEnumerable<Contractor>> GetContractorsAsync(string authToken, string geoPolygon, string geoRelation, int? endpointIdx = null)
         {
-            return await GetContractorsInternalAsync(GetAuthorizationHeaderValue(authToken), geoPolygon, geoRelation);
+            return await GetContractorsInternalAsync(GetAuthorizationHeaderValue(authToken), geoPolygon, geoRelation, endpointIdx);
         }
 
 
@@ -40,13 +42,14 @@ namespace FietsParkeren.ApiClient
         /// <param name="authHdr">credentials supplied as authorization header value</param>
         /// <param name="geoPolygon">Polygon to spatially filter the data</param>
         /// <param name="geoRelation">Type of spatial relation to use when filtering data; defaults to 'intersects'</param>
+        /// <param name="endpointIdx"></param>
         /// <returns></returns>
-        protected internal static async Task<IEnumerable<Contractor>> GetContractorsInternalAsync(string authHdr, string geoPolygon, string geoRelation)
+        protected internal static async Task<IEnumerable<Contractor>> GetContractorsInternalAsync(string authHdr, string geoPolygon, string geoRelation, int? endpointIdx = null)
         {
             var cfg = ServiceConfig.Read();
             
             var contractorsCallResponses = await ApiCallWithCombinedPages<ContractorRawResponse>(
-                cfg.Endpoint,
+                cfg.GetEndpoint(endpointIdx ?? 0).Url,
                 cfg.Routes.Contractors,
                 authHdr,
                 queryParams: PrepareGeoPolygonQuery(geoPolygon, geoRelation)

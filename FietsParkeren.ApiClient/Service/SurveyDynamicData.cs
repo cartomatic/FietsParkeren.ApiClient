@@ -26,11 +26,12 @@ namespace FietsParkeren.ApiClient
         /// <param name="pageSize"></param>
         /// <param name="page"></param>
         /// <param name="dateFrom"></param>
+        /// <param name="endpointIdx"></param>
         /// <returns></returns>
         public static async Task<PagedResult<IEnumerable<SectionDynamicData>>> GetSurveyDynamicDataAsync(string user, string pass, string surveyIds, string authorityId, string contractorId, string dateFrom,
-            string dateTo, int? maxOccupation, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null)
+            string dateTo, int? maxOccupation, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null, int? endpointIdx = null)
         {
-            return await GetSurveyDynamicDataAsync(GetAuthorizationHeaderValue(user, pass), surveyIds, authorityId, contractorId, dateFrom, dateTo, maxOccupation, geoPolygon, geoRelation, pageSize, page);
+            return await GetSurveyDynamicDataAsync(GetAuthorizationHeaderValue(user, pass), surveyIds, authorityId, contractorId, dateFrom, dateTo, maxOccupation, geoPolygon, geoRelation, pageSize, page, endpointIdx);
         }
 
         /// <summary>
@@ -47,11 +48,12 @@ namespace FietsParkeren.ApiClient
         /// <param name="page"></param>
         /// <param name="authorityId"></param>
         /// <param name="dateFrom"></param>
+        /// <param name="endpointIdx"></param>
         /// <returns></returns>
         public static async Task<PagedResult<IEnumerable<SectionDynamicData>>> GetSurveyDynamicDataAsync(string authToken, string surveyIds, string authorityId, string contractorId, string dateFrom,
-            string dateTo, int? maxOccupation, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null)
+            string dateTo, int? maxOccupation, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null, int? endpointIdx = null)
         {
-            return await GetSurveyDynamicDataInternalsAsync(GetAuthorizationHeaderValue(authToken), surveyIds, authorityId, contractorId, dateFrom, dateTo, maxOccupation,  geoPolygon, geoRelation, pageSize, page);
+            return await GetSurveyDynamicDataInternalsAsync(GetAuthorizationHeaderValue(authToken), surveyIds, authorityId, contractorId, dateFrom, dateTo, maxOccupation,  geoPolygon, geoRelation, pageSize, page, endpointIdx);
         }
 
         /// <summary>
@@ -68,9 +70,10 @@ namespace FietsParkeren.ApiClient
         /// <param name="dateFrom"></param>
         /// <param name="pageSize"></param>
         /// <param name="page"></param>
+        /// <param name="endpointIdx"></param>
         /// <returns></returns>
         protected internal static async Task<PagedResult<IEnumerable<SectionDynamicData>>> GetSurveyDynamicDataInternalsAsync(string authHdr, string surveyIds, string authorityId, string contractorId, string dateFrom,
-            string dateTo, int? maxOccupation, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null)
+            string dateTo, int? maxOccupation, string geoPolygon, string geoRelation, int? pageSize = null, int? page = null, int? endpointIdx = null)
         {
             var cfg = ServiceConfig.Read();
 
@@ -116,7 +119,7 @@ namespace FietsParkeren.ApiClient
             if (maxOccupation.HasValue && maxOccupation > 0)
             {
                 var surveysDynamicDataCallResponse = await ApiCallSinglePage<SectionDynamicDataMaxOccupationRawResponse>(
-                    cfg.Endpoint,
+                    cfg.GetEndpoint(endpointIdx ?? 0).Url,
                     cfg.Routes.DynamicData,
                     authHdr,
                     queryParams: queryParams
@@ -138,7 +141,7 @@ namespace FietsParkeren.ApiClient
             }
             else {
                 var surveysDynamicDataCallResponse = await ApiCallSinglePage<SectionDynamicDataRawResponse>(
-                    cfg.Endpoint,
+                    cfg.GetEndpoint(endpointIdx ?? 0).Url,
                     cfg.Routes.DynamicData,
                     authHdr,
                     queryParams: queryParams
