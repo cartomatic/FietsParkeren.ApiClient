@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FietsParkeren.ApiClient.DataModel
+﻿namespace FietsParkeren.ApiClient.DataModel
 {
     public class PagedResult<T>
     {

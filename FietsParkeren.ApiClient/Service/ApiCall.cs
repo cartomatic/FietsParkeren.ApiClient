@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using FietsParkeren.ApiClient.DataModel;
 using RestSharp;

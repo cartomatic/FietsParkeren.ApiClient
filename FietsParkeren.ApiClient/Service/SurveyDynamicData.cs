@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Mapping;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using FietsParkeren.ApiClient.DataModel;
-using Rollbar.Common;
 
 namespace FietsParkeren.ApiClient
 {

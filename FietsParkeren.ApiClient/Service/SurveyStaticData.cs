@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FietsParkeren.ApiClient.DataModel;
-using RestSharp;
-using Rollbar.Common;
 
 namespace FietsParkeren.ApiClient
 {

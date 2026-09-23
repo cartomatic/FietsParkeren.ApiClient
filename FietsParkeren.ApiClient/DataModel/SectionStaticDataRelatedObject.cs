@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
-
-namespace FietsParkeren.ApiClient.DataModel
+﻿namespace FietsParkeren.ApiClient.DataModel
 {
     #region old v1 objects
     //public class SectionStaticDataRelatedObject
